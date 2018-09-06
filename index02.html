@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			body {
+				background-color: #ffffff;
+				margin: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas"></canvas>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/94/three.min.js"></script>
+		<script>
+
+        //RENDERER
+    	var renderer = new THREE.WebGLRenderer({canvas: myCanvas, antialias: true});
+    	renderer.setClearColor(0x000000);
+    	renderer.setPixelRatio(window.devicePixelRatio);
+    	renderer.setSize(window.innerWidth, window.innerHeight);
+
+        //CAMERA
+        var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
+        // var camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0.1, 3000);
+
+        //SCENE
+        var scene = new THREE.Scene();
+
+        //LIGHTS
+        var light = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light);
+        
+        var light1 = new THREE.PointLight(0xffffff, 0.5);
+        scene.add(light1);
+
+        //OBJECT
+        var material = new THREE.MeshPhongMaterial({
+			color: 0xf3ffe2,
+			specular: 0xff0000,
+			shininess: 0
+			//emissive: 0xff0000,
+			//emissiveIntensity: 0.5,
+			//transparent: true,
+			//opacity: 1,
+			//wireframe: true,
+			//wireframeLinewidth: 6,
+			//wireframeLinejoin: 'round',
+			//wireframeLinecap: 'round',
+		});
+			
+		var geometry = new THREE.BoxGeometry(100, 100, 100);
+			
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.z = -1000;
+		mesh.position.x = -100;
+
+        scene.add(mesh);
+			
+		var geometry2 = new THREE.SphereGeometry(50,20,20);
+	
+		var mesh2 = new THREE.Mesh(geometry2, material);
+		mesh2.position.z = -1000;
+		mesh2.position.x = 100;
+		
+		scene.add(mesh2);
+			
+		var geometry3 = new THREE.PlaneGeometry(10000, 10000, 100, 100);
+		
+		var mesh3 = new THREE.Mesh(geometry3, material);
+		mesh3.rotation.x = -90 * Math.PI / 180;
+		mesh3.position.y = -100;
+		
+		scene.add(mesh3);
+
+
+        //RENDER LOOP
+        requestAnimationFrame(render);
+			
+		var delta = 0;
+        function render() {
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+			//delta += 0.1;
+			//geometry.vertices[0].x = -25 + Math.sin(delta) * 50;
+			//geometry.verticesNeedUpdate = true;
+			
+			camera.position.z +=1;
+			renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+		</script>
+	</body>
+</html>
